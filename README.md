@@ -43,7 +43,7 @@ To run this project locally or via Docker, ensure the following are installed:
 Before running anything, grant execution permissions:
 
 ```bash
-chmod +x run_tests.sh
+chmod +x run.sh
 ```
 
 ### Option 1: Local Installation
@@ -53,7 +53,7 @@ You can install and run the project locally using a virtual environment.
 #### Step 1 – Install locally with venv:
 
 ```bash
-./run_tests.sh --install-local --with-venv
+./run.sh --install-local --with-venv
 source venv/bin/activate
 ```
 
@@ -68,7 +68,7 @@ pytest --base-url=https://airbnb.com --headed
 You may also use --no-venv if running in an already activated environment:
 
 ```bash
-./run_tests.sh --install-local --no-venv
+./run.sh --install-local --no-venv
 ```
 
 ### Option 2: Using Docker
@@ -76,11 +76,11 @@ You may also use --no-venv if running in an already activated environment:
 #### Build Docker No cache
 
 ```bash
-./run_tests.sh --docker-build
+./run.sh --docker-build
 ```
 
 #### Option 2: Using Docker
 
 ```bash
-./run_tests.sh --docker-run --base-url=https://airbnb.com
+./run.sh --docker-run --base-url=https://airbnb.com
 ```

@@ -13,6 +13,6 @@ COPY . .
 RUN pip install .
 
 # Ensure the entrypoint script is executable
-RUN chmod +x run_tests.sh
+RUN chmod +x run.sh
 
 ENTRYPOINT ["pytest"]
