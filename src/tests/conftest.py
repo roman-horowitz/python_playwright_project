@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from playwright.sync_api import Page
 
@@ -50,7 +52,9 @@ def open_base_url_and_store_storage_values(page: Page) -> None:
 
 @pytest.fixture
 def search_data_from_json() -> dict:
-    manager = JsonFileManager("data/test_find_top_cheapest_data.json")
+    base_dir = os.path.dirname(__file__)
+    json_path = os.path.join(base_dir, "data", "test_find_top_cheapest_data.json")
+    manager = JsonFileManager(json_path)
     return manager.load()
 
 

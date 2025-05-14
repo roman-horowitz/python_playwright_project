@@ -1,6 +1,6 @@
 pytest
-pytest-xdist
 playwright
 allure-pytest
 pytest-playwright
 pydantic
+setuptools
