@@ -128,7 +128,7 @@ def go_to_top_cheapest_and_validate_result(page, cheapest: str):
     reservation = ReservationPage(page)
     name = reservation.get_item_name().lower().split("rating")[0]
     reservation_dates = reservation.get_dates()
-    dates = format_date_reservation_page(reservation_dates).lower()
+    dates = format_date_reservation_page(reservation_dates)
     guests_count = reservation.get_guests_count().split("Guests")[1].split()[0]
     price = format_reservation_price(reservation)
     total_price = int(price * dates)
