@@ -1,7 +1,5 @@
-import difflib
 import json
-import logging
-
+from deepdiff import DeepDiff
 from playwright.sync_api import Page
 
 from src.helpers.date_utils import set_date_range_data
@@ -131,7 +129,7 @@ def go_to_top_cheapest_and_validate_result(page, cheapest: str):
     dates = format_date_reservation_page(reservation_dates)
     guests_count = reservation.get_guests_count().split("Guests")[1].split()[0]
     price = format_reservation_price(reservation)
-    total_price = int(price * dates)
+    total_price = int(price * dates.nights)
     product = ProductData(
         name=name,
         url=page.url,
@@ -140,27 +138,13 @@ def go_to_top_cheapest_and_validate_result(page, cheapest: str):
         price_per_night=price,
         total_price=total_price
     )
-    logging.info(product)
+    print(product)
     return product
 
 
 def get_previous_results_and_compare(results: ProductData, json_results_file_manager: JsonFileManager):
     expected = json_results_file_manager.load()
     actual = results.model_dump()
-    expected_json = json.dumps(expected, indent=2, sort_keys=True)
-    actual_json = json.dumps(actual, indent=2, sort_keys=True)
-
-    diff = difflib.unified_diff(
-        expected_json.splitlines(),
-        actual_json.splitlines(),
-        fromfile="expected",
-        tofile="actual",
-        lineterm=""
-    )
-    diff_output = "\n".join(diff)
-    if diff_output:
-        print("Mismatch detected:\n")
-        print(diff_output)
-    else:
-        print("Objects match.")
+    diff = DeepDiff(expected, actual, ignore_order=True)
+    assert expected == actual, f"Snapshot mismatch:\n{json.dumps(diff, indent=2)}"
     json_results_file_manager.save(actual)

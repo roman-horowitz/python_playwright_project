@@ -1,6 +1,4 @@
 from datetime import datetime
-
-from src.helpers.date_utils import set_date_range_data
 from src.helpers.models import FormattedDateRange
 from src.page_objects.reservation_page import ReservationPage
 from src.page_objects.results_page import ResultsPagination
@@ -38,6 +36,7 @@ def wait_for_cards_to_load(page, timeout=10000, expected_min=1):
 
 
 def format_date_reservation_page(text: str) -> FormattedDateRange:
+    # TODO this can be done better if a dedicated element was created
     # Clean the string
     cleaned = text.replace("Dates", "").replace("Edit", "").strip()
 
@@ -58,7 +57,6 @@ def format_date_reservation_page(text: str) -> FormattedDateRange:
     else:
         co_month, co_day = co_parts
 
-    # Construct date strings (we assume current year or can accept a year param)
     year = datetime.now().year
     checkin_date = datetime.strptime(f"{ci_month} {ci_day} {year}", "%b %d %Y").date()
     checkout_date = datetime.strptime(f"{co_month} {co_day} {year}", "%b %d %Y").date()
@@ -76,6 +74,7 @@ def format_date_reservation_page(text: str) -> FormattedDateRange:
 
 
 def format_reservation_price(reservation_page: ReservationPage):
+    # TODO this can be done better if a dedicated element was created
     text = reservation_page.get_reservation_price()
     cleaned = text[1::].strip()
     price_part, nights_part = cleaned.split('x')

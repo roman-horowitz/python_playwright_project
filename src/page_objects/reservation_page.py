@@ -31,16 +31,28 @@ class ReservationPage(BasePage):
         self.click("text=Next")
 
     def get_item_name(self):
-        name_1 = self.get_element(self.NAME)
-        name_2 = self.get_element(self.NAME_2)
-        if self.check_locator_visibility(name_2):
-            return self.get_text_from_locator(name_2)
-        else:
-            return self.get_text_from_locator(name_1)
+        el = self.get_element(self.NAME)
+        if not self.check_locator_visibility(el):
+            return self.get_item_name_2()
+        return self.get_text(self.NAME)
 
+    def get_item_name_2(self):
+        el = self.get_element(self.NAME_2)
+        if not self.check_locator_visibility(el):
+            return self.get_item_name()
+        return self.get_text(self.NAME_2)
 
-    def get_dates(self) -> str:
+    def get_dates(self):
+        el = self.get_element(self.DATE)
+        if not self.check_locator_visibility(el):
+            return self.get_text(self.DATE_2)
         return self.get_text(self.DATE)
+
+    def get_dates_2(self):
+        el = self.get_element(self.DATE_2)
+        if not self.check_locator_visibility(el):
+            return self.get_text(self.DATE)
+        return self.get_text(self.DATE_2)
 
     def get_guests_count(self) -> str:
         return self.get_inner_text(self.GUESTS)
