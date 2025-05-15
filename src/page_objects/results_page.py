@@ -5,7 +5,7 @@ from src.page_objects.base_page import BasePage, TEST_PREFIX_ID
 
 class ResultsHeaderFilter(BasePage):
     SEARCH_RESULTS_LOCATION_NAME = f"[{TEST_PREFIX_ID}='little-search-location']"
-    SEARCH_RESULTS_DATES = f"[{TEST_PREFIX_ID}='little-search-anytime']"
+    SEARCH_RESULTS_DATES = f"[{TEST_PREFIX_ID}='little-search-date']"
     SEARCH_RESULTS_GUESTS = f"[{TEST_PREFIX_ID}='little-search-guests']"
 
     def __init__(self, page: Page):

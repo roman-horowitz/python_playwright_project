@@ -24,7 +24,7 @@ class BasePage:
 
         except (Error, Exception) as e:
             take_screenshot_on_error(self.page)
-            raise RuntimeError(f"Error during: {description}\n↳ {str(e)}")
+            raise RuntimeError(f"Error during: {description}\n {str(e)}")
 
     def goto(self, url: str, timeout: int = 10000):
         return self.handle(lambda: self.page.goto(url, timeout=timeout), f"navigate to {url}")
@@ -73,3 +73,10 @@ class BasePage:
 
     def select_option(self, locator: str, value: str) -> int:
         return self.handle(lambda: self.page.select_option(locator, value), f"selecting element {locator}")
+
+    def get_element_by_role(self, locator, name: str) -> Locator:
+        return self.handle(lambda: self.page.get_by_role(role=locator, name=name), f"getting element by role {locator}")
+
+    def expect_element_not_to_have_empty_text(self, locator: Locator):
+        return self.handle(lambda: expect(locator).not_to_have_text("", timeout=2000),
+                    f"expect element not to have count {locator}")

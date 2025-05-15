@@ -1,6 +1,8 @@
 import random
 from datetime import datetime, timedelta
 
+from src.helpers.models import FormattedDateRange
+
 
 def get_random_date_range(
         start_days_from_today=3,
@@ -18,10 +20,22 @@ def get_random_date_range(
     return checkin.strftime("%Y-%m-%d"), checkout.strftime("%Y-%m-%d")
 
 
-def format_date_range_for_ui(checkin, checkout):
-    checkin = datetime.strptime(checkin, "%Y-%m-%d").date()
-    checkout = datetime.strptime(checkout, "%Y-%m-%d").date()
+def set_date_range_data(checkin, checkout, year_first_format: bool = True) -> FormattedDateRange:
+    formatting = "%Y-%m-%d" if year_first_format else "%m/%d/%Y"
+    checkin_date = datetime.strptime(checkin, formatting).date()
+    checkout_date = datetime.strptime(checkout, formatting).date()
 
-    ci_month, ci_day = checkin.strftime("%b"), str(int(checkin.strftime("%d")))
-    co_month, co_day = checkout.strftime("%b"), str(int(checkout.strftime("%d")))
-    return ci_month, ci_day, co_month, co_day
+    ci_month = checkin_date.strftime("%b")
+    ci_day = str(int(checkin_date.strftime("%d")))
+    co_month = checkout_date.strftime("%b")
+    co_day = str(int(checkout_date.strftime("%d")))
+
+    total_days = (checkout_date - checkin_date).days
+
+    return FormattedDateRange(
+        checkin_month=ci_month,
+        checkin_day=ci_day,
+        checkout_month=co_month,
+        checkout_day=co_day,
+        nights=total_days
+    )

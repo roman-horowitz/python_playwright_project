@@ -10,6 +10,8 @@ class ProductPage(BasePage):
     GUESTS_COUNT = "#GuestPicker-book_it-trigger"
     PRICE = 'div[style*="--pricing-guest-display-price-alignment"]'
     RESERVE_BUTTON = f"[{TEST_PREFIX_ID}='homes-pdp-cta-btn']"
+    CHECKIN_DATE = f"[{TEST_PREFIX_ID}='change-dates-checkIn']"
+    CHECKOUT_DATE = f"[{TEST_PREFIX_ID}='change-dates-checkOut']"
 
     def __init__(self, page: Page):
         super().__init__(page)
@@ -26,6 +28,14 @@ class ProductPage(BasePage):
         el = self.booking_info_locator()
         dates = el.locator(self.RESERVATION_DATE)
         return self.get_text_from_locator(dates)
+
+    def get_checkin_date(self):
+        el = self.get_element(self.CHECKIN_DATE)
+        return self.get_text_from_locator(el)
+
+    def get_checkout_date(self):
+        el = self.get_element(self.CHECKOUT_DATE)
+        return self.get_text_from_locator(el)
 
     def get_guests_count(self) -> str:
         el = self.booking_info_locator()

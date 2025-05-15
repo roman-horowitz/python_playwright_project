@@ -10,7 +10,7 @@ class ReservationPage(BasePage):
     NAME = "#LISTING_CARD-title"
     DATE = "[data-section-id='DATE_PICKER']"
     GUESTS = "[data-section-id='GUEST_PICKER']"
-    AVERAGE_PRICE_DETAILS = "before taxes and fees"
+    PRICE_DETAILS = f"[{TEST_PREFIX_ID}='pd-title-ACCOMMODATION']"
 
     def __init__(self, page: Page):
         super().__init__(page)
@@ -37,5 +37,5 @@ class ReservationPage(BasePage):
     def get_guests_count(self) -> str:
         return self.get_inner_text(self.GUESTS)
 
-    def get_average_price(self):
-        return self.get_text(f"text={self.AVERAGE_PRICE_DETAILS}")
+    def get_reservation_price(self):
+        return self.get_text(self.PRICE_DETAILS)
