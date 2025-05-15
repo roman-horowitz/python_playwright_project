@@ -1,16 +1,16 @@
 {
-  "name": "vacation apartment.",
-  "url": "https://www.airbnb.com/rooms/934621937793183520?adults=2&check_in=2025-05-20&check_out=2025-06-02&children=1&search_mode=regular_search&source_impression_id=p3_1747324951_P3JD5d1saYyNuE3h&previous_page_section_name=1000&federated_search_id=42dc1dc0-8628-4cf9-b788-d6ac6d56e4b3",
+  "name": "urban oasis - solace in holon",
+  "url": "https://www.airbnb.com/rooms/1390281349455260726?adults=2&check_in=2025-06-09&check_out=2025-06-19&children=1&search_mode=regular_search&source_impression_id=p3_1747325177_P3jypwLa8_567HoP&previous_page_section_name=1000&federated_search_id=b831def4-96c8-4581-8e7c-197d4879a542",
   "checkin_checkout": {
-    "checkin_month": "May",
-    "checkin_day": "20",
+    "checkin_month": "Jun",
+    "checkin_day": "9",
     "checkout_month": "Jun",
-    "checkout_day": "2",
-    "nights": 13,
-    "standard_format_checkin": "2025-05-20",
-    "standard_format_checkout": "2025-06-02"
+    "checkout_day": "19",
+    "nights": 10,
+    "standard_format_checkin": "2025-06-09",
+    "standard_format_checkout": "2025-06-19"
   },
   "guests": "3",
-  "price_per_night": 305.0,
-  "total_price": 3965
+  "price_per_night": 288.0,
+  "total_price": 2880
 }
