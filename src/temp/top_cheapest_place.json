@@ -1,0 +1,16 @@
+{
+  "name": "8 MIN from the BEACH & OLD JAFFA",
+  "url": "https://www.airbnb.com/rooms/1217298903948754949?adults=2&check_in=2025-06-02&check_out=2025-06-08&children=1&search_mode=regular_search&category_tag=Tag%3A8678&photo_id=2103669825&source_impression_id=p3_1747321770_P3Q6j3sXcSK42ViL&previous_page_section_name=1000&federated_search_id=cb3c4242-19a4-4829-a22c-6a9a6062c6c2",
+  "checkin_checkout": {
+    "checkin_month": "Jun",
+    "checkin_day": "2",
+    "checkout_month": "Jun",
+    "checkout_day": "8",
+    "nights": 6,
+    "standard_format_checkin": "2025-06-02",
+    "standard_format_checkout": "2025-06-08"
+  },
+  "guests": "3",
+  "price_per_night": 176.0,
+  "total_price": 1056
+}

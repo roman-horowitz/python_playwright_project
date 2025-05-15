@@ -41,7 +41,7 @@ def filter_dates_main_header(header_filter: HomesMainHeaderFilter, data: SearchD
 
 def perform_search_with_filters(page: Page, data: SearchData) -> None:
     mhf = HomesMainHeaderFilter(page)
-    mhf.goto("/homes")
+    General(page).go_to_url("/homes")
     filter_location_main_header(mhf, data)
     filter_dates_main_header(mhf, data)
     open_filter_and_set_guests(mhf, data)
@@ -64,15 +64,11 @@ def validate_guests_count_in_results_filters(res_filter_page: ResultsHeaderFilte
 
 
 def validate_dates_in_results_filters(res_filter_page: ResultsHeaderFilter, data: SearchData) -> None:
-    actual = res_filter_page.get_results_date()
-    expected_date_ranges = set_date_range_data(data.checkin, data.checkout)
-
-    parts = [expected_date_ranges.checkin_day,
-             expected_date_ranges.checkin_month,
-             expected_date_ranges.checkout_day,
-             expected_date_ranges.checkout_month]
-
-    for part in parts:
+    actual = res_filter_page.get_results_date().lower()
+    cico = data.checkin_checkout
+    parts = [cico.checkin_day, cico.checkin_month, cico.checkout_day, cico.checkout_month]
+    parts_lowered = [part.lower() for part in parts]
+    for part in parts_lowered:
         assert part in actual, f"Expected '{part}' in '{actual}'"
 
 
@@ -93,11 +89,9 @@ def access_products_and_store_info(page, results: list[str]) -> list[ProductData
     pp = ProductPage(page)
     g = General(page)
     enriched_results: list[ProductData] = []
-
     for url in results:
         g.go_to_url(url)
-        page.goto(url)
-        name = pp.get_location_name()
+        name = pp.get_location_name().lower()
         reservation_dates = format_checkin_checkout_dates_product(pp)
         guests_count = pp.get_guests_count().split()[0]
         price_text = pp.get_price()
@@ -132,11 +126,12 @@ def go_to_top_cheapest_and_validate_result(page, cheapest: str):
     General(page).go_to_url(cheapest)
     ProductPage(page).click_reserve()
     reservation = ReservationPage(page)
-    name = reservation.get_item_name()
-    dates = format_date_reservation_page(reservation)
+    name = reservation.get_item_name().lower().split("rating")[0]
+    reservation_dates = reservation.get_dates()
+    dates = format_date_reservation_page(reservation_dates).lower()
     guests_count = reservation.get_guests_count().split("Guests")[1].split()[0]
-    price, days = format_reservation_price(reservation)
-    total_price = int(price * days)
+    price = format_reservation_price(reservation)
+    total_price = int(price * dates)
     product = ProductData(
         name=name,
         url=page.url,

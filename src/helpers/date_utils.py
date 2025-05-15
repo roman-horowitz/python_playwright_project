@@ -4,12 +4,8 @@ from datetime import datetime, timedelta
 from src.helpers.models import FormattedDateRange
 
 
-def get_random_date_range(
-        start_days_from_today=3,
-        max_days_from_today=30,
-        min_stay_nights=2,
-        max_stay_nights=14
-) -> tuple[str, str]:
+def get_random_date_range(start_days_from_today=3, max_days_from_today=30,
+                          min_stay_nights=2, max_stay_nights=14) -> tuple[str, str]:
     today = datetime.today()
     checkin_offset = random.randint(start_days_from_today, max_days_from_today)
     stay_length = random.randint(min_stay_nights, max_stay_nights)
@@ -37,5 +33,7 @@ def set_date_range_data(checkin, checkout, year_first_format: bool = True) -> Fo
         checkin_day=ci_day,
         checkout_month=co_month,
         checkout_day=co_day,
-        nights=total_days
+        nights=total_days,
+        standard_format_checkin=str(checkin_date),
+        standard_format_checkout=str(checkout_date)
     )

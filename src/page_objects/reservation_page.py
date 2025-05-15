@@ -8,7 +8,9 @@ class ReservationPage(BasePage):
     MOBILE_FIELD = f"[{TEST_PREFIX_ID}='login-signup-phonenumber']"
     WHEN_TO_PAY_TEXT = "Choose when to pay"
     NAME = "#LISTING_CARD-title"
+    NAME_2 = f"[{TEST_PREFIX_ID}='checkout-product-details-listing-card']"
     DATE = "[data-section-id='DATE_PICKER']"
+    DATE_2 = '[data-section-id="PRODUCT_DETAILS"]'
     GUESTS = "[data-section-id='GUEST_PICKER']"
     PRICE_DETAILS = f"[{TEST_PREFIX_ID}='pd-title-ACCOMMODATION']"
 
@@ -29,7 +31,13 @@ class ReservationPage(BasePage):
         self.click("text=Next")
 
     def get_item_name(self):
-        return self.get_text(self.NAME)
+        name_1 = self.get_element(self.NAME)
+        name_2 = self.get_element(self.NAME_2)
+        if self.check_locator_visibility(name_2):
+            return self.get_text_from_locator(name_2)
+        else:
+            return self.get_text_from_locator(name_1)
+
 
     def get_dates(self) -> str:
         return self.get_text(self.DATE)

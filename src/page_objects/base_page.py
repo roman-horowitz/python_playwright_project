@@ -57,7 +57,7 @@ class BasePage:
         return self.handle(lambda: expect(locator).not_to_be_empty(), f"Expecting for {locator}")
 
     def check_locator_visibility(self, locator: Locator) -> bool:
-        return self.handle(lambda: locator.is_visible(), f"locator is_visible {locator}")
+        return self.handle(lambda: locator.is_visible(timeout=2000), f"locator is_visible {locator}")
 
     def check_if_locator_is_enabled(self, locator: Locator) -> bool:
         return self.handle(lambda: locator.is_enabled(), f"locator is_enabled {locator}")

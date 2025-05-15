@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from src.helpers.date_utils import set_date_range_data
+from src.helpers.models import FormattedDateRange
 from src.page_objects.reservation_page import ReservationPage
 from src.page_objects.results_page import ResultsPagination
 
@@ -33,19 +37,46 @@ def wait_for_cards_to_load(page, timeout=10000, expected_min=1):
     )
 
 
-def format_date_reservation_page(reservation_page: ReservationPage) -> str:
-    cleaned = reservation_page.get_dates().lower()
-    cleaned = cleaned.replace("–", "")
-    cleaned = cleaned.replace("dates", "")
-    cleaned = cleaned.replace("edit", "")
-    parts = cleaned.split("\u2009")
-    return "".join(parts)
+def format_date_reservation_page(text: str) -> FormattedDateRange:
+    # Clean the string
+    cleaned = text.replace("Dates", "").replace("Edit", "").strip()
+
+    # Split on the en-dash separator (surrounded by narrow spaces)
+    parts = cleaned.split("\u2009–\u2009")
+
+    checkin_part = parts[0].strip()  # e.g., "Jun 2"
+    checkout_part = parts[1].strip()  # e.g., "8" or "Jul 5"
+
+    # Parse check-in
+    ci_month, ci_day = checkin_part.split()
+
+    # Parse checkout
+    co_parts = checkout_part.split()
+    if len(co_parts) == 1:
+        co_month = ci_month  # same month
+        co_day = co_parts[0]
+    else:
+        co_month, co_day = co_parts
+
+    # Construct date strings (we assume current year or can accept a year param)
+    year = datetime.now().year
+    checkin_date = datetime.strptime(f"{ci_month} {ci_day} {year}", "%b %d %Y").date()
+    checkout_date = datetime.strptime(f"{co_month} {co_day} {year}", "%b %d %Y").date()
+    nights = (checkout_date - checkin_date).days
+
+    return FormattedDateRange(
+        checkin_month=ci_month,
+        checkin_day=ci_day,
+        checkout_month=co_month,
+        checkout_day=co_day,
+        nights=nights,
+        standard_format_checkin=str(checkin_date),
+        standard_format_checkout=str(checkout_date)
+    )
 
 
 def format_reservation_price(reservation_page: ReservationPage):
     text = reservation_page.get_reservation_price()
     cleaned = text[1::].strip()
     price_part, nights_part = cleaned.split('x')
-    price = float(price_part.strip())
-    nights = int(nights_part.strip().split()[0])
-    return price, nights
+    return float(price_part.strip())
