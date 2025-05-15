@@ -8,7 +8,7 @@ from src.helpers.results_scraper import scroll_and_scrape_all_top_rated_results
 from src.helpers.url_validator import assert_results_url_contains_expected_filters
 
 
-# @pytest.mark.flaky(reruns=3)
+@pytest.mark.flaky(reruns=3)
 def test_reserve_cheapest_top_rated_apartment(page: Page, search_data, base_url, json_results_file_manager):
     perform_search_with_filters(page, search_data)
     assert_results_url_contains_expected_filters(page.url, search_data)
