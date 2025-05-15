@@ -1,16 +1,16 @@
 {
-  "name": "8 min from the beach & old jaffa",
-  "url": "https://www.airbnb.com/rooms/1217298903948754949?adults=2&check_in=2025-06-09&check_out=2025-06-15&children=1&search_mode=regular_search&category_tag=Tag%3A8678&photo_id=2103669825&source_impression_id=p3_1747329041_P3fzfOsXCDYyhres&previous_page_section_name=1000&federated_search_id=6cb0041f-27e6-41c9-8b63-b5709f08f7f2",
+  "name": "urban oasis - solace in holon",
+  "url": "https://www.airbnb.com/rooms/1390281349455260726?adults=2&check_in=2025-06-10&check_out=2025-06-23&children=1&search_mode=regular_search&source_impression_id=p3_1747336169_P3EMTphC6IlshDqV&previous_page_section_name=1000&federated_search_id=d7067361-a4f5-4b0b-a744-58887fe691bf",
   "checkin_checkout": {
     "checkin_month": "Jun",
-    "checkin_day": "9",
+    "checkin_day": "10",
     "checkout_month": "Jun",
-    "checkout_day": "15",
-    "nights": 6,
-    "standard_format_checkin": "2025-06-09",
-    "standard_format_checkout": "2025-06-15"
+    "checkout_day": "23",
+    "nights": 13,
+    "standard_format_checkin": "2025-06-10",
+    "standard_format_checkout": "2025-06-23"
   },
   "guests": "3",
-  "price_per_night": 176.0,
-  "total_price": 1056
+  "price_per_night": 292.0,
+  "total_price": 3796
 }

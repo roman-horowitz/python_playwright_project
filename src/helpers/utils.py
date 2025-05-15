@@ -35,11 +35,23 @@ def wait_for_cards_to_load(page, timeout=10000, expected_min=1):
     )
 
 
+# TODO I don't like to do those things but I need good locators
+def split_date_range_at_year(text: str) -> str:
+    current_year = datetime.now().year
+    for year in [current_year, current_year + 1]:
+        year_str = str(year)
+        if year_str in text:
+            return text.split(year_str, 1)[0].strip().rstrip(",")
+    raise ValueError("No valid year found in string.")
+
+
 def format_date_reservation_page(text: str) -> FormattedDateRange:
     # TODO this can be done better if a dedicated element was created
     # Clean the string
-    cleaned = text.replace("Dates", "").replace("Edit", "").strip()
-
+    if "edit" in text.lower():
+        cleaned = text.replace("Dates", "").replace("Edit", "").strip()
+    else:
+        cleaned = split_date_range_at_year(text)
     # Split on the en-dash separator (surrounded by narrow spaces)
     parts = cleaned.split("\u2009–\u2009")
 
@@ -71,6 +83,31 @@ def format_date_reservation_page(text: str) -> FormattedDateRange:
         standard_format_checkin=str(checkin_date),
         standard_format_checkout=str(checkout_date)
     )
+
+
+# TODO I don't like to do those things but I need good locators
+def extract_guest_count(text: str) -> str:
+    current_year = datetime.now().year
+    for year in [current_year, current_year + 1]:
+        year_str = str(year)
+        if year_str in text:
+            guest_part = text.split(year_str, 1)[1].strip()
+            break
+    else:
+        raise ValueError("No valid year found to isolate guest info.")
+
+    adults = 0
+    children = 0
+
+    if "adults" in guest_part:
+        parts = guest_part.split("adults")[0].strip().split()
+        adults = int(parts[-1])
+
+    if "child" in guest_part:
+        parts = guest_part.split("child")[0].strip().split()
+        children = int(parts[-1])
+    print({"adults": adults, "children": children, "total": adults + children})
+    return str(adults + children)
 
 
 def format_reservation_price(reservation_page: ReservationPage):

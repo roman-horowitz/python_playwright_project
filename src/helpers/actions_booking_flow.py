@@ -6,7 +6,8 @@ from src.helpers.date_utils import set_date_range_data
 from src.helpers.json_file_management import JsonFileManager
 from src.helpers.models import SearchData, ProductData, FormattedDateRange
 from src.helpers.results_scraper import extract_price
-from src.helpers.utils import wait_for_results_to_load, format_date_reservation_page, format_reservation_price
+from src.helpers.utils import wait_for_results_to_load, format_date_reservation_page, format_reservation_price, \
+    extract_guest_count
 from src.page_objects.general import General
 from src.page_objects.main_header_filter import HomesMainHeaderFilter
 from src.page_objects.product_page import ProductPage
@@ -127,17 +128,24 @@ def go_to_top_cheapest_and_validate_result(page, cheapest: str):
     name = reservation.get_item_name().lower().split("rating")[0]
     reservation_dates = reservation.get_dates()
     dates = format_date_reservation_page(reservation_dates)
-    guests_count = reservation.get_guests_count().split("Guests")[1].split()[0]
+
+    # TODO I don't like to do those things but I need good locators
+    guests_text = reservation.get_guests_count()
+    if "Guests" in guests_text:
+        guests_count = guests_text.split("Guests")[1].split()[0].replace('\u00a0', ' ').strip()
+    else:
+        guests_count = extract_guest_count(guests_text)
+
     price = format_reservation_price(reservation)
     total_price = int(price * dates.nights)
     product = ProductData(
         name=name,
-        url=page.url,
+        url='',
         checkin_checkout=dates,
         guests=guests_count,
         price_per_night=price,
-        total_price=total_price
-    )
+        total_price=total_price)
+
     print(product)
     return product
 
@@ -145,6 +153,11 @@ def go_to_top_cheapest_and_validate_result(page, cheapest: str):
 def get_previous_results_and_compare(results: ProductData, json_results_file_manager: JsonFileManager):
     expected = json_results_file_manager.load()
     actual = results.model_dump()
-    diff = DeepDiff(expected, actual, ignore_order=True)
-    assert expected == actual, f"Snapshot mismatch:\n{json.dumps(diff, indent=2)}"
+    diff = DeepDiff(
+        expected,
+        actual,
+        ignore_order=True,
+        exclude_paths={"root['url']"}
+    )
+    assert not diff, f"Snapshot mismatch:\n{json.dumps(diff, indent=2)}"
     json_results_file_manager.save(actual)

@@ -10,7 +10,6 @@ class ReservationPage(BasePage):
     NAME = "#LISTING_CARD-title"
     NAME_2 = f"[{TEST_PREFIX_ID}='checkout-product-details-listing-card']"
     DATE = "[data-section-id='DATE_PICKER']"
-    DATE_2 = '[data-section-id="PRODUCT_DETAILS"]'
     GUESTS = "[data-section-id='GUEST_PICKER']"
     PRICE_DETAILS = f"[{TEST_PREFIX_ID}='pd-title-ACCOMMODATION']"
 
@@ -45,17 +44,23 @@ class ReservationPage(BasePage):
     def get_dates(self):
         el = self.get_element(self.DATE)
         if not self.check_locator_visibility(el):
-            return self.get_text(self.DATE_2)
+            return self.get_dates_2()
         return self.get_text(self.DATE)
 
     def get_dates_2(self):
-        el = self.get_element(self.DATE_2)
-        if not self.check_locator_visibility(el):
-            return self.get_text(self.DATE)
-        return self.get_text(self.DATE_2)
+        el = self.get_element("text=Trip details").locator("xpath=following-sibling::div[1]")
+        return self.get_text_from_locator(el)
 
     def get_guests_count(self) -> str:
-        return self.get_inner_text(self.GUESTS)
+        el = self.get_element(self.GUESTS)
+        if not self.check_locator_visibility(el):
+            return self.get_dates_2()
+        return self.get_text(self.GUESTS)
+
+    def get_guests_count_2(self) -> str:
+        el = self.get_element(self.GUESTS)
+        return self.get_text_from_locator(el)
+
 
     def get_reservation_price(self):
         return self.get_text(self.PRICE_DETAILS)
